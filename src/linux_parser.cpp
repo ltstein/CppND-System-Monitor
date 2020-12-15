@@ -105,20 +105,6 @@ long LinuxParser::UpTime() {
   return std::stol(uptime);
 }
 
-//Jiffies parsing relavent for older kernels, not currently implemented
-// TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
-
-// TODO: Read and return the number of active jiffies for a PID
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid [[maybe_unused]]) { return 0; }
-
-// TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
-
-// TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
-
 // DONE: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() {
   string cpu, user, nice, system, idle, iowait, irq, softirq, steal, guest,
@@ -295,6 +281,5 @@ float LinuxParser::ProcessCPUUtil(int pid) {
     }
   }
   double total_time = user + kernel + childrenU + childrenK;
-  double seconds = UpTime() - (UpTime(pid));
-  return (total_time / sysconf(_SC_CLK_TCK)) / seconds;
+  return (total_time / sysconf(_SC_CLK_TCK)) / UpTime(pid);
 }
